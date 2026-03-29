@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Sidebar from '../components/layout/Sidebar';
 import Header from '../components/layout/Header';
 import StatsCards from '../components/dashboard/StatsCards';
@@ -7,10 +7,10 @@ import FocusStreak from '../components/dashboard/FocusStreak';
 import DistractionLog from '../components/dashboard/DistractionLog';
 import MicroTimeline from '../components/dashboard/MicroTimeline';
 
-const Dashboard: React.FC = () => {
+const Dashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
-  // Mock data for demonstration
+  // Mock data
   const stats = [
     { label: 'Total Focus Time', value: '4h 30m', change: 12, icon: '⏱️' },
     { label: 'Sessions Completed', value: '3', change: 5, icon: '✅' },
@@ -55,47 +55,54 @@ const Dashboard: React.FC = () => {
   const handleBlockDistraction = (id: string) => console.log('Block distraction:', id);
 
   return (
-    <div className="dashboard-layout">
-      <Sidebar isOpen={sidebarOpen} onToggle={() => setSidebarOpen(!sidebarOpen)} />
-      <main className={`main-content ${sidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}>
-        <Header title="Dashboard" subtitle="Track your deep work sessions" />
-        
-        <div className="dashboard-grid">
-          <section className="stats-section">
-            <StatsCards stats={stats} />
-          </section>
+    <div className="flex min-h-screen bg-slate-950 text-white">
+      
+      <Sidebar 
+        isOpen={sidebarOpen} 
+        onToggle={() => setSidebarOpen(!sidebarOpen)} 
+      />
 
-          <section className="session-section">
+      <div className="flex-1 flex flex-col">
+
+        <Header 
+          title="Dashboard" 
+          subtitle="Track your deep work sessions" 
+        />
+
+        <div className="p-6 space-y-6">
+
+          <StatsCards stats={stats} />
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            
             <DeepWorkCard 
               session={currentSession} 
               onPause={handlePause}
               onStop={handleStop}
             />
-          </section>
 
-          <section className="streak-section">
             <FocusStreak 
               currentStreak={5} 
               longestStreak={12} 
               weekData={weekData} 
             />
-          </section>
 
-          <section className="timeline-section">
-            <MicroTimeline 
-              events={timelineEvents} 
-              currentTime="10:45 AM" 
-            />
-          </section>
+          </div>
 
-          <section className="distractions-section">
-            <DistractionLog 
-              distractions={distractions} 
-              onBlock={handleBlockDistraction} 
-            />
-          </section>
+          <MicroTimeline 
+            events={timelineEvents} 
+            currentTime="10:45 AM" 
+          />
+
+          <DistractionLog 
+            distractions={distractions} 
+            onBlock={handleBlockDistraction} 
+          />
+
         </div>
-      </main>
+
+      </div>
+
     </div>
   );
 };
