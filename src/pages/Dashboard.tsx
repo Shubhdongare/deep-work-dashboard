@@ -6,6 +6,7 @@ import DeepWorkCard from '../components/dashboard/DeepWorkCard';
 import FocusStreak from '../components/dashboard/FocusStreak';
 import DistractionLog from '../components/dashboard/DistractionLog';
 import MicroTimeline from '../components/dashboard/MicroTimeline';
+import BreakManager from '../components/dashboard/BreakManager';
 
 const Dashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -93,6 +94,8 @@ const Dashboard = () => {
             events={timelineEvents} 
             currentTime="10:45 AM" 
           />
+
+          <BreakManager />
 
           <DistractionLog 
             distractions={distractions} 
