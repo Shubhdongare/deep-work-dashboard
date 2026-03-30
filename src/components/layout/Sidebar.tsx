@@ -1,26 +1,46 @@
-import React from 'react';
-
 interface SidebarProps {
   isOpen: boolean;
   onToggle: () => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ isOpen, onToggle }) => {
+const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
   return (
-    <aside className={`sidebar ${isOpen ? 'open' : 'closed'}`}>
-      <div className="sidebar-header">
-        <h2>Deep Work Dashboard</h2>
-        <button onClick={onToggle} className="toggle-btn">
-          {isOpen ? '←' : '→'}
+    <aside
+      className={`bg-slate-900 text-white h-screen transition-all duration-300 ${
+        isOpen ? "w-64" : "w-16"
+      }`}
+    >
+      {/* Header */}
+      <div className="flex items-center justify-between p-4 border-b border-slate-700">
+        <h2 className={`${!isOpen && "hidden"} font-semibold`}>
+          Deep Work
+        </h2>
+
+        <button
+          onClick={onToggle}
+          className="text-sm bg-slate-800 px-2 py-1 rounded"
+        >
+          {isOpen ? "←" : "→"}
         </button>
       </div>
-      <nav className="sidebar-nav">
-        <ul>
-          <li><a href="#dashboard">Dashboard</a></li>
-          <li><a href="#tasks">Tasks</a></li>
-          <li><a href="#analytics">Analytics</a></li>
-          <li><a href="#settings">Settings</a></li>
-        </ul>
+
+      {/* Navigation */}
+      <nav className="p-4 space-y-2">
+        <a href="#dashboard" className="block p-2 rounded hover:bg-slate-800">
+          Dashboard
+        </a>
+
+        <a href="#tasks" className="block p-2 rounded hover:bg-slate-800">
+          Tasks
+        </a>
+
+        <a href="#analytics" className="block p-2 rounded hover:bg-slate-800">
+          Analytics
+        </a>
+
+        <a href="#settings" className="block p-2 rounded hover:bg-slate-800">
+          Settings
+        </a>
       </nav>
     </aside>
   );
