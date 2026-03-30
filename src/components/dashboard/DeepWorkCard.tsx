@@ -15,6 +15,8 @@ interface DeepWorkCardProps {
   onResume?: () => void;
   onStop?: () => void;
   onBreak?: () => void;
+  onComplete?: () => void;
+  onTick?: () => void;
 }
 
 const DeepWorkCard = ({
@@ -23,21 +25,31 @@ const DeepWorkCard = ({
   onResume,
   onStop,
   onBreak,
+  onComplete,
+  onTick,
 }: DeepWorkCardProps) => {
   const [timeLeft, setTimeLeft] = useState(session.duration * 60);
   const [isRunning, setIsRunning] = useState(false);
-
+ 
   useEffect(() => {
-    let timer: number;
+  let timer: number;
 
-    if (isRunning && timeLeft > 0) {
-      timer = setInterval(() => {
-        setTimeLeft((prev) => prev - 1);
-      }, 1000);
-    }
+  if (isRunning && timeLeft > 0) {
+    timer = setInterval(() => {
+      setTimeLeft((prev) => {
+        onTick?.();
+        return prev - 1;
+      });
+    }, 1000);
+  }
 
-    return () => clearInterval(timer);
-  }, [isRunning, timeLeft]);
+  if (timeLeft === 0 && isRunning) {
+    setIsRunning(false);
+    onComplete?.();
+  }
+
+  return () => clearInterval(timer);
+}, [isRunning, timeLeft]);
 
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);

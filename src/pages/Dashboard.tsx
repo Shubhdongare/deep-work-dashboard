@@ -10,14 +10,32 @@ import BreakManager from "../components/dashboard/BreakManager";
 const Dashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [isBreakActive, setIsBreakActive] = useState(false);
+  const [totalFocusTime, setTotalFocusTime] = useState(0);
+  const [sessionsCompleted, setSessionsCompleted] = useState(0);
 
   // Mock data
-  const stats = [
-    { label: "Total Focus Time", value: "4h 30m", change: 12, icon: "⏱️" },
-    { label: "Sessions Completed", value: "3", change: 5, icon: "✅" },
-    { label: "Focus Score", value: "87%", change: -2, icon: "🎯" },
-    { label: "Distractions Blocked", value: "12", change: 8, icon: "🛡️" },
-  ];
+ const stats = [
+  {
+    label: "Total Focus Time",
+    value: `${Math.floor(totalFocusTime / 60)}m`,
+    icon: "⏱️",
+  },
+  {
+    label: "Sessions Completed",
+    value: sessionsCompleted,
+    icon: "✅",
+  },
+  {
+    label: "Focus Score",
+    value: "87%",
+    icon: "🎯",
+  },
+  {
+    label: "Breaks Taken",
+    value: "0",
+    icon: "☕",
+  },
+];
 
   const currentSession = {
     id: "1",
@@ -90,6 +108,8 @@ const Dashboard = () => {
               onPause={handlePause}
               onStop={handleStop}
               onBreak={() => setIsBreakActive(true)}
+              onTick={() => setTotalFocusTime((prev) => prev + 1)}
+              onComplete={() => setSessionsCompleted((prev) => prev + 1)}
             />
 
             <FocusStreak
