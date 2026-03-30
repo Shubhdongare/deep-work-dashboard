@@ -1,5 +1,3 @@
-import React from 'react';
-
 interface StreakDay {
   date: string;
   minutes: number;
@@ -12,45 +10,82 @@ interface FocusStreakProps {
   weekData: StreakDay[];
 }
 
-const FocusStreak: React.FC<FocusStreakProps> = ({ 
-  currentStreak, 
-  longestStreak, 
-  weekData 
-}) => {
+const FocusStreak = ({
+  currentStreak,
+  longestStreak,
+  weekData
+}: FocusStreakProps) => {
+
   const getDayName = (dateString: string) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', { weekday: 'short' });
+    return date.toLocaleDateString("en-US", { weekday: "short" });
   };
 
   return (
-    <div className="focus-streak">
-      <div className="streak-header">
-        <h3>Focus Streak</h3>
-        <div className="streak-stats">
-          <div className="streak-stat">
-            <span className="value">{currentStreak}</span>
-            <span className="label">Current</span>
-          </div>
-          <div className="streak-stat">
-            <span className="value">{longestStreak}</span>
-            <span className="label">Longest</span>
-          </div>
-        </div>
-      </div>
-      <div className="streak-week">
-        {weekData.map((day, index) => (
-          <div 
-            key={index} 
-            className={`streak-day ${day.completed ? 'completed' : ''}`}
-          >
-            <span className="day-name">{getDayName(day.date)}</span>
-            <div className="day-indicator">
-              {day.completed && <span className="checkmark">✓</span>}
+    <div className="bg-slate-900 p-6 rounded-xl border border-slate-800">
+
+      {/* Header */}
+      <div className="flex items-center justify-between mb-4">
+
+        <h3 className="text-lg font-semibold">
+          Focus Streak
+        </h3>
+
+        <div className="flex gap-6">
+
+          <div className="text-center">
+            <div className="text-xl font-semibold">
+              {currentStreak}
             </div>
-            <span className="day-minutes">{day.minutes}m</span>
+            <div className="text-xs text-gray-400">
+              Current
+            </div>
+          </div>
+
+          <div className="text-center">
+            <div className="text-xl font-semibold">
+              {longestStreak}
+            </div>
+            <div className="text-xs text-gray-400">
+              Longest
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      {/* Week Grid */}
+      <div className="grid grid-cols-7 gap-2">
+
+        {weekData.map((day, index) => (
+          <div
+            key={index}
+            className={`flex flex-col items-center p-2 rounded-lg 
+            ${
+              day.completed
+                ? "bg-green-600/20 border border-green-600"
+                : "bg-slate-800"
+            }`}
+          >
+
+            <span className="text-xs text-gray-400">
+              {getDayName(day.date)}
+            </span>
+
+            <div className="text-lg my-1">
+              {day.completed ? "✓" : "-"}
+            </div>
+
+            <span className="text-xs">
+              {day.minutes}m
+            </span>
+
           </div>
         ))}
+
       </div>
+
     </div>
   );
 };

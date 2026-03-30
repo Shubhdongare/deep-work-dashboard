@@ -48,7 +48,7 @@ const Dashboard = () => {
       id: "2",
       time: "10:15",
       title: "Distraction Blocked",
-      type: "distraction" as const,
+      type: "break" as const,
     },
     {
       id: "3",
@@ -96,11 +96,17 @@ const Dashboard = () => {
             />
           </div>
 
-          {/* Break Manager */}
-          <BreakManager />
+          {/* Bottom Grid */}
+<div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
-          {/* Timeline */}
-          <MicroTimeline events={timelineEvents} currentTime="10:45 AM" />
+  <BreakManager />
+
+  <MicroTimeline 
+    events={timelineEvents} 
+    currentTime="10:45 AM" 
+  />
+
+</div>
         </div>
       </div>
     </div>
