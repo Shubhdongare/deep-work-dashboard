@@ -9,6 +9,7 @@ import BreakManager from "../components/dashboard/BreakManager";
 
 const Dashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [isBreakActive, setIsBreakActive] = useState(false);
 
   // Mock data
   const stats = [
@@ -82,11 +83,13 @@ const Dashboard = () => {
           <StatsCards stats={stats} />
 
           {/* Main Grid */}
+          {/* Main Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <DeepWorkCard
               session={currentSession}
               onPause={handlePause}
               onStop={handleStop}
+              onBreak={() => setIsBreakActive(true)}
             />
 
             <FocusStreak
@@ -97,16 +100,13 @@ const Dashboard = () => {
           </div>
 
           {/* Bottom Grid */}
-<div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {isBreakActive && (
+              <BreakManager onClose={() => setIsBreakActive(false)} />
+            )}
 
-  <BreakManager />
-
-  <MicroTimeline 
-    events={timelineEvents} 
-    currentTime="10:45 AM" 
-  />
-
-</div>
+            <MicroTimeline events={timelineEvents} currentTime="10:45 AM" />
+          </div>
         </div>
       </div>
     </div>
