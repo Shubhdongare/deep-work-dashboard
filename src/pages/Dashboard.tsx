@@ -7,6 +7,14 @@ import FocusStreak from "../components/dashboard/FocusStreak";
 import MicroTimeline from "../components/dashboard/MicroTimeline";
 import BreakManager from "../components/dashboard/BreakManager";
 
+type Task = {
+  id: string;
+  title: string;
+  duration: number;
+  startTime: string;
+  status: "pending" | "completed";
+};
+
 const Dashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [isBreakActive, setIsBreakActive] = useState(false);
@@ -17,6 +25,51 @@ const Dashboard = () => {
   const [goalInput, setGoalInput] = useState(4);
 
   const progress = Math.min((totalFocusTime / dailyGoal) * 100, 100);
+
+  const [tasks, setTasks] = useState<Task[]>([
+    {
+      id: "1",
+      title: "Build Dashboard UI",
+      duration: 60,
+      startTime: "Not started",
+      status: "pending" as const,
+    },
+  ]);
+
+  const [taskTitle, setTaskTitle] = useState("");
+  const [taskDuration, setTaskDuration] = useState(30);
+
+  const addTask = () => {
+    if (!taskTitle) return;
+
+    const newTask = {
+      id: Date.now().toString(),
+      title: taskTitle,
+      duration: taskDuration,
+      startTime: "Not started",
+      status: "pending" as const,
+    };
+
+    setTasks([...tasks, newTask]);
+    setTaskTitle("");
+  };
+
+  const toggleTaskComplete = (id: string) => {
+    setTasks((prev) =>
+      prev.map((task) =>
+        task.id === id
+          ? {
+              ...task,
+              status: task.status === "completed" ? "pending" : "completed",
+            }
+          : task
+      )
+    );
+  };
+
+  const deleteTask = (id: string) => {
+    setTasks((prev) => prev.filter((task) => task.id !== id));
+  };
 
   // Mock data
   const stats = [
@@ -154,6 +207,47 @@ const Dashboard = () => {
                   </>
                 )}
               </div>
+            </div>
+
+            <div className="space-y-4">
+              <h3 className="text-lg font-semibold">Daily Tasks</h3>
+
+              <div className="bg-slate-900 p-4 rounded-xl border border-slate-800">
+                <h3 className="text-lg font-semibold mb-3">Add Daily Task</h3>
+
+                <div className="flex gap-3">
+                  <input
+                    type="text"
+                    placeholder="Task name"
+                    value={taskTitle}
+                    onChange={(e) => setTaskTitle(e.target.value)}
+                    className="flex-1 bg-slate-800 px-3 py-2 rounded"
+                  />
+
+                  <input
+                    type="number"
+                    value={taskDuration}
+                    onChange={(e) => setTaskDuration(Number(e.target.value))}
+                    className="w-24 bg-slate-800 px-3 py-2 rounded"
+                  />
+
+                  <button
+                    onClick={addTask}
+                    className="bg-blue-600 px-4 py-2 rounded"
+                  >
+                    Add
+                  </button>
+                </div>
+              </div>
+
+              {tasks.map((task) => (
+                <DeepWorkCard
+                  key={task.id}
+                  session={task}
+                  onComplete={() => toggleTaskComplete(task.id)}
+                  onDelete={() => deleteTask(task.id)}
+                />
+              ))}
             </div>
 
             {/* Progress Bar Container */}

@@ -112,6 +112,20 @@ const BreakManager = ({ onClose }: BreakManagerProps) => {
           Start
         </button>
 
+        {isRunning ? (
+          <button onClick={pauseBreak} className="bg-blue-600 px-8 py-2 rounded">
+            Pause
+          </button>
+        ) : (
+          <button
+            onClick={resumeBreak}
+            className="bg-blue-600 px-8 py-2 rounded"
+            disabled={timeLeft === 0}
+          >
+            Resume
+          </button>
+        )}
+
         <button onClick={stopBreak} className="bg-yellow-600 px-8 py-2 rounded">
           Stop
         </button>

@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 
 interface DeepWorkSession {
-  id: string;
+  id: string | number;
   title: string;
   duration: number;
   startTime: string;
-  status: "active" | "completed" | "paused";
+  status: "active" | "completed" | "paused" | "pending";
   focusScore?: number;
 }
 
@@ -16,6 +16,7 @@ interface DeepWorkCardProps {
   onStop?: () => void;
   onBreak?: () => void;
   onComplete?: () => void;
+  onDelete?: () => void;
   onTick?: () => void;
 }
 
@@ -26,6 +27,7 @@ const DeepWorkCard = ({
   onStop,
   onBreak,
   onComplete,
+  onDelete,
   onTick,
 }: DeepWorkCardProps) => {
   const [timeLeft, setTimeLeft] = useState(session.duration * 60);
@@ -57,25 +59,24 @@ const DeepWorkCard = ({
     return `${minutes}:${secs < 10 ? "0" : ""}${secs}`;
   };
 
-  const formatDuration = (minutes: number) => {
-    return `${minutes} min`;
-  };
-
   const startSession = () => {
     setIsRunning(true);
   };
 
   const pauseSession = () => {
     setIsRunning(false);
+    onPause?.();
   };
 
   const resumeSession = () => {
     setIsRunning(true);
+    onResume?.();
   };
 
   const stopSession = () => {
     setIsRunning(false);
     setTimeLeft(session.duration * 60);
+    onStop?.();
   };
 
   return (
@@ -163,6 +164,28 @@ const DeepWorkCard = ({
           Stop
         </button>
       </div>
+
+      {(onComplete || onDelete) && (
+        <div className="flex justify-between mt-4">
+          {onComplete && (
+            <button
+              onClick={onComplete}
+              className="bg-green-600 px-3 py-1 rounded text-sm"
+            >
+              Complete
+            </button>
+          )}
+
+          {onDelete && (
+            <button
+              onClick={onDelete}
+              className="bg-red-700 px-3 py-1 rounded text-sm"
+            >
+              Delete
+            </button>
+          )}
+        </div>
+      )}
     </div>
   );
 };
