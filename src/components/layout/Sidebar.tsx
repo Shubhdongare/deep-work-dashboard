@@ -57,7 +57,7 @@ const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
 
   return (
     <aside
-      className={`bg-slate-900 text-white h-screen transition-all duration-300 fixed left-0 top-0 z-50 ${
+      className={`bg-slate-900 text-white h-screen transition-all duration-300 fixed left-0 top-0 z-50 flex flex-col ${
         isOpen ? "w-64" : "w-16"
       }`}
     >

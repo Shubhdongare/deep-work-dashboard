@@ -37,7 +37,7 @@ const AppLayout = () => {
           onLogout={handleLogout}
         />
         
-        <main className="min-h-[calc(100vh-64px)] bg-slate-950">
+        <main key={sidebarOpen ? 'open' : 'closed'} className="min-h-[calc(100vh-64px)] bg-slate-950">
           <Outlet />
         </main>
       </div>
