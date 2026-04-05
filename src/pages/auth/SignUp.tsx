@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../redux/hooks';
-import { register, clearError } from '../redux/slices/authSlice';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import { register, clearError } from '../../redux/slices/authSlice';
 
 const SignUp = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { isAuthenticated, isLoading, error } = useAppSelector((state) => state.auth);
+  const { isAuthenticated, isLoading, error } = useAppSelector((state: any) => state.auth);
   
   const [displayName, setDisplayName] = useState('');
   const [email, setEmail] = useState('');

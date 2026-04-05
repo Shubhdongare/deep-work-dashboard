@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '../redux/hooks';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { 
   addTask, 
   updateTask, 
@@ -7,17 +7,17 @@ import {
   updateTaskStatus, 
   setCurrentDate,
   loadTasksFromStorage 
-} from '../redux/slices/taskSlice';
-import type { TaskPriority, TaskStatus } from '../types/task.types';
+} from '../../redux/slices/taskSlice';
+import type { TaskPriority, TaskStatus } from '../../types/task.types';
 
-const priorityColors: Record<TaskPriority, string> = {
+const priorityColors: any = {
   low: 'bg-slate-500/20 text-slate-400 border-slate-500/30',
   medium: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
   high: 'bg-orange-500/20 text-orange-400 border-orange-500/30',
   urgent: 'bg-red-500/20 text-red-400 border-red-500/30',
 };
 
-const statusStyles: Record<TaskStatus, string> = {
+const statusStyles: any = {
   pending: 'bg-slate-500/20 text-slate-400',
   in_progress: 'bg-blue-500/20 text-blue-400',
   completed: 'bg-green-500/20 text-green-400',
@@ -26,7 +26,7 @@ const statusStyles: Record<TaskStatus, string> = {
 
 const DailyTasks = () => {
   const dispatch = useAppDispatch();
-  const { tasks, currentDate, filter, sort } = useAppSelector((state) => state.tasks);
+  const { tasks, currentDate, sort } = useAppSelector((state: any) => state.tasks);
   
   const [newTaskTitle, setNewTaskTitle] = useState('');
   const [newTaskDescription, setNewTaskDescription] = useState('');
@@ -41,21 +41,21 @@ const DailyTasks = () => {
     dispatch(loadTasksFromStorage());
   }, [dispatch]);
 
-  const todayTasks = tasks.filter(task => task.date === currentDate);
+  const todayTasks = tasks.filter((task: any) => task.date === currentDate);
 
-  const filteredTasks = todayTasks.filter(task => {
+  const filteredTasks = todayTasks.filter((task: any) => {
     if (statusFilter !== 'all' && task.status !== statusFilter) return false;
     if (priorityFilter !== 'all' && task.priority !== priorityFilter) return false;
     return true;
-  }).sort((a, b) => {
-    const priorityOrder: Record<TaskPriority, number> = { urgent: 0, high: 1, medium: 2, low: 3 };
+  }).sort((a: any, b: any) => {
+    const priorityOrder: any = { urgent: 0, high: 1, medium: 2, low: 3 };
     if (sort.order === 'asc') {
       return priorityOrder[a.priority] - priorityOrder[b.priority];
     }
     return priorityOrder[b.priority] - priorityOrder[a.priority];
   });
 
-  const completedCount = todayTasks.filter(t => t.status === 'completed').length;
+  const completedCount = todayTasks.filter((t: any) => t.status === 'completed').length;
   const totalCount = todayTasks.length;
 
   const handleAddTask = (e: React.FormEvent) => {
@@ -267,7 +267,7 @@ const DailyTasks = () => {
             <p className="text-slate-500 text-sm mt-1">Click "Add Task" to create one</p>
           </div>
         ) : (
-          filteredTasks.map((task) => (
+          filteredTasks.map((task: any) => (
             <div
               key={task.id}
               className={`group flex items-center gap-4 p-4 bg-slate-800/30 border border-slate-700/30 rounded-xl hover:border-slate-600/50 transition-all ${

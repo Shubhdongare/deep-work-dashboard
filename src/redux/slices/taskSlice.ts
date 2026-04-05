@@ -1,5 +1,5 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-import type { Task, TaskStatus, TaskPriority, CreateTaskInput, UpdateTaskInput, TaskFilter, TaskSort } from '../../types/task.types';
+import type { Task, TaskStatus, CreateTaskInput, UpdateTaskInput, TaskFilter, TaskSort } from '../../types/task.types';
 
 export interface DailyTask extends Task {
   date: string;
