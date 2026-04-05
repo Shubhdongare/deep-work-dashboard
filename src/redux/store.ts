@@ -1,10 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
 import deepWorkReducer from './slices/deepWorkSlice';
+import taskReducer from './slices/taskSlice';
+import authReducer from './slices/authSlice';
 
 export const store = configureStore({
   reducer: {
     deepWork: deepWorkReducer,
-    // tasks: taskReducer,
+    tasks: taskReducer,
+    auth: authReducer,
   },
 });
 
