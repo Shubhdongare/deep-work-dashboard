@@ -1,20 +1,29 @@
-import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
 interface DeepWorkSession {
   id: string;
   title: string;
   duration: number;
   startTime: string;
-  status: 'active' | 'completed' | 'paused';
+  status: "active" | "completed" | "paused";
   focusScore?: number;
 }
+
+const loadNumber = (key: string, fallback: number): number => {
+  const stored = localStorage.getItem(key);
+  return stored ? Number(stored) : fallback;
+};
 
 interface DeepWorkState {
   currentSession: DeepWorkSession | null;
   sessions: DeepWorkSession[];
   totalFocusTime: number;
+  sessionsCompleted: number;
   currentStreak: number;
   longestStreak: number;
+  dailyGoal: number;
+  isBreakActive: boolean;
+  breaksTaken: number;
   isLoading: boolean;
   error: string | null;
 }
@@ -22,15 +31,19 @@ interface DeepWorkState {
 const initialState: DeepWorkState = {
   currentSession: null,
   sessions: [],
-  totalFocusTime: 0,
+  totalFocusTime: loadNumber("totalFocusTime", 3600),
+  sessionsCompleted: loadNumber("sessionsCompleted", 0),
   currentStreak: 0,
   longestStreak: 0,
+  dailyGoal: loadNumber("dailyGoal", 4 * 60 * 60),
+  isBreakActive: false,
+  breaksTaken: loadNumber("breaksTaken", 0),
   isLoading: false,
   error: null,
 };
 
 const deepWorkSlice = createSlice({
-  name: 'deepWork',
+  name: "deepWork",
   initialState,
   reducers: {
     startSession: (state, action: PayloadAction<DeepWorkSession>) => {
@@ -39,20 +52,40 @@ const deepWorkSlice = createSlice({
     },
     pauseSession: (state) => {
       if (state.currentSession) {
-        state.currentSession.status = 'paused';
+        state.currentSession.status = "paused";
       }
     },
     resumeSession: (state) => {
       if (state.currentSession) {
-        state.currentSession.status = 'active';
+        state.currentSession.status = "active";
       }
     },
     stopSession: (state) => {
       if (state.currentSession) {
-        state.currentSession.status = 'completed';
-        state.totalFocusTime += state.currentSession.duration;
+        state.currentSession.status = "completed";
         state.currentSession = null;
       }
+    },
+    incrementFocusTime: (state, action: PayloadAction<number | undefined>) => {
+      const incrementBy = action.payload ?? 1;
+      state.totalFocusTime += incrementBy;
+      localStorage.setItem("totalFocusTime", state.totalFocusTime.toString());
+    },
+    incrementSessionsCompleted: (state) => {
+      state.sessionsCompleted += 1;
+      localStorage.setItem("sessionsCompleted", state.sessionsCompleted.toString());
+    },
+    setDailyGoal: (state, action: PayloadAction<number>) => {
+      state.dailyGoal = action.payload;
+      localStorage.setItem("dailyGoal", action.payload.toString());
+    },
+    setBreakActive: (state, action: PayloadAction<boolean>) => {
+      if (action.payload && !state.isBreakActive) {
+        state.breaksTaken += 1;
+        localStorage.setItem("breaksTaken", state.breaksTaken.toString());
+      }
+
+      state.isBreakActive = action.payload;
     },
     updateFocusScore: (state, action: PayloadAction<number>) => {
       if (state.currentSession) {
@@ -82,6 +115,10 @@ export const {
   pauseSession,
   resumeSession,
   stopSession,
+  incrementFocusTime,
+  incrementSessionsCompleted,
+  setDailyGoal,
+  setBreakActive,
   updateFocusScore,
   incrementStreak,
   resetStreak,
@@ -90,3 +127,4 @@ export const {
 } = deepWorkSlice.actions;
 
 export default deepWorkSlice.reducer;
+

@@ -1,97 +1,101 @@
-import { useEffect, useState } from "react";
-import Sidebar from "../components/layout/Sidebar";
-import Header from "../components/layout/Header";
+import { useEffect, useMemo, useState } from "react";
 import StatsCards from "../components/dashboard/StatsCards";
 import DeepWorkCard from "../components/dashboard/DeepWorkCard";
 import FocusStreak from "../components/dashboard/FocusStreak";
 import MicroTimeline from "../components/dashboard/MicroTimeline";
 import BreakManager from "../components/dashboard/BreakManager";
-
-type Task = {
-  id: string;
-  title: string;
-  duration: number;
-  startTime: string;
-  status: "pending" | "completed";
-};
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import type { RootState } from "../redux/store";
+import {
+  addTask as addTaskAction,
+  deleteTask as deleteTaskAction,
+  loadTasksFromStorage,
+  updateTaskStatus,
+} from "../redux/slices/taskSlice";
+import {
+  incrementFocusTime,
+  incrementSessionsCompleted,
+  pauseSession,
+  resumeSession,
+  setBreakActive,
+  setDailyGoal,
+  stopSession,
+} from "../redux/slices/deepWorkSlice";
 
 const Dashboard = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [isBreakActive, setIsBreakActive] = useState(false);
-  const [totalFocusTime, setTotalFocusTime] = useState(3600);
-  const [sessionsCompleted, setSessionsCompleted] = useState(0);
-  const [dailyGoal, setDailyGoal] = useState(4 * 60 * 60);
+  const dispatch = useAppDispatch();
+  const { tasks, currentDate } = useAppSelector((state: RootState) => state.tasks);
+  const { dailyGoal, totalFocusTime, sessionsCompleted, isBreakActive, breaksTaken } =
+    useAppSelector((state: RootState) => state.deepWork);
+
   const [isEditingGoal, setIsEditingGoal] = useState(false);
-  const [goalInput, setGoalInput] = useState(4);
-
-  const progress = Math.min((totalFocusTime / dailyGoal) * 100, 100);
-
-  const [tasks, setTasks] = useState<Task[]>([
-    {
-      id: "1",
-      title: "Build Dashboard UI",
-      duration: 60,
-      startTime: "Not started",
-      status: "pending" as const,
-    },
-  ]);
-
+  const [goalInput, setGoalInput] = useState(dailyGoal / 3600);
   const [taskTitle, setTaskTitle] = useState("");
   const [taskDuration, setTaskDuration] = useState(30);
 
+  useEffect(() => {
+    dispatch(loadTasksFromStorage());
+  }, [dispatch]);
+
+  useEffect(() => {
+    setGoalInput(dailyGoal / 3600);
+  }, [dailyGoal]);
+
+  const progress = Math.min((totalFocusTime / dailyGoal) * 100, 100);
+
+  const todayTasks = useMemo(
+    () => tasks.filter((task) => task.date === currentDate),
+    [currentDate, tasks]
+  );
+
   const addTask = () => {
-    if (!taskTitle) return;
+    if (!taskTitle.trim()) return;
 
-    const newTask = {
-      id: Date.now().toString(),
-      title: taskTitle,
-      duration: taskDuration,
-      startTime: "Not started",
-      status: "pending" as const,
-    };
-
-    setTasks([...tasks, newTask]);
+    dispatch(
+      addTaskAction({
+        title: taskTitle.trim(),
+        estimatedDuration: taskDuration,
+      })
+    );
     setTaskTitle("");
   };
 
   const toggleTaskComplete = (id: string) => {
-    setTasks((prev) =>
-      prev.map((task) =>
-        task.id === id
-          ? {
-              ...task,
-              status: task.status === "completed" ? "pending" : "completed",
-            }
-          : task
-      )
+    const task = todayTasks.find((item) => item.id === id);
+    if (!task) return;
+
+    dispatch(
+      updateTaskStatus({
+        id,
+        status: task.status === "completed" ? "pending" : "completed",
+      })
     );
   };
 
   const deleteTask = (id: string) => {
-    setTasks((prev) => prev.filter((task) => task.id !== id));
+    dispatch(deleteTaskAction(id));
   };
 
-  // Mock data
   const stats = [
     {
       label: "Total Focus Time",
       value: `${Math.floor(totalFocusTime / 60)}m`,
-      icon: "⏱️",
+      icon: "Time",
     },
     {
       label: "Sessions Completed",
       value: sessionsCompleted,
-      icon: "✅",
+      icon: "Done",
     },
     {
       label: "Focus Score",
       value: "87%",
-      icon: "🎯",
+      icon: "Score",
     },
     {
       label: "Breaks Taken",
-      value: "0",
-      icon: "☕",
+      value: breaksTaken,
+      icon: "Break",
     },
   ];
 
@@ -137,160 +141,129 @@ const Dashboard = () => {
     { id: "4", time: "10:35", title: "Resumed Work", type: "resume" as const },
   ];
 
-  const handlePause = () => console.log("Pause session");
-  const handleStop = () => console.log("Stop session");
-
-  useEffect(() => {
-    const savedGoal = localStorage.getItem("dailyGoal");
-
-    if (savedGoal) {
-      setDailyGoal(Number(savedGoal));
-      setGoalInput(Number(savedGoal) / 3600);
-    }
-  }, []);
-
   return (
-    <div className="flex min-h-screen bg-slate-950 text-white">
-      {/* Sidebar */}
-      <Sidebar
-        isOpen={sidebarOpen}
-        onToggle={() => setSidebarOpen(!sidebarOpen)}
-      />
+    <div className="min-h-full bg-slate-950 p-6 text-white">
+      <div className="mx-auto max-w-7xl space-y-6">
+        <div className="rounded-xl border border-slate-800 bg-slate-900 p-6">
+          <div className="mb-2 flex items-center justify-between">
+            <h3 className="text-lg font-semibold">Daily Goal</h3>
 
-      {/* Main Content */}
-      <div className="flex-1 flex flex-col">
-        {/* Header */}
-        <Header title="Dashboard" subtitle="Track your deep work sessions" />
-
-        {/* Dashboard Content */}
-        <div className="p-6 space-y-6">
-          <div className="bg-slate-900 p-6 rounded-xl border border-slate-800">
-            <div className="flex justify-between items-center mb-2">
-              <h3 className="text-lg font-semibold">Daily Goal</h3>
-
-              <div className="flex items-center gap-2">
-                {isEditingGoal ? (
-                  <>
-                    <input
-                      type="number"
-                      value={goalInput}
-                      onChange={(e) => setGoalInput(Number(e.target.value))}
-                      className="bg-slate-800 px-2 py-1 rounded w-16"
-                    />
-
-                    <button
-                      onClick={() => {
-                        const newGoal = goalInput * 3600;
-                        setDailyGoal(newGoal);
-                        localStorage.setItem("dailyGoal", newGoal.toString());
-                        setIsEditingGoal(false);
-                      }}
-                      className="bg-green-600 px-2 py-1 rounded"
-                    >
-                      Save
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    <span className="text-sm text-gray-400">
-                      {Math.floor(totalFocusTime / 3600)}h{" "}
-                      {Math.floor((totalFocusTime % 3600) / 60)}m /{" "}
-                      {dailyGoal / 3600}h
-                    </span>
-
-                    <button
-                      onClick={() => setIsEditingGoal(true)}
-                      className="text-gray-400 hover:text-white"
-                    >
-                      ✏️
-                    </button>
-                  </>
-                )}
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold">Daily Tasks</h3>
-
-              <div className="bg-slate-900 p-4 rounded-xl border border-slate-800">
-                <h3 className="text-lg font-semibold mb-3">Add Daily Task</h3>
-
-                <div className="flex gap-3">
-                  <input
-                    type="text"
-                    placeholder="Task name"
-                    value={taskTitle}
-                    onChange={(e) => setTaskTitle(e.target.value)}
-                    className="flex-1 bg-slate-800 px-3 py-2 rounded"
-                  />
-
+            <div className="flex items-center gap-2">
+              {isEditingGoal ? (
+                <>
                   <input
                     type="number"
-                    value={taskDuration}
-                    onChange={(e) => setTaskDuration(Number(e.target.value))}
-                    className="w-24 bg-slate-800 px-3 py-2 rounded"
+                    value={goalInput}
+                    min={1}
+                    onChange={(e) => setGoalInput(Number(e.target.value))}
+                    className="w-16 rounded bg-slate-800 px-2 py-1"
                   />
 
                   <button
-                    onClick={addTask}
-                    className="bg-blue-600 px-4 py-2 rounded"
+                    onClick={() => {
+                      dispatch(setDailyGoal(goalInput * 3600));
+                      setIsEditingGoal(false);
+                    }}
+                    className="rounded bg-green-600 px-2 py-1"
                   >
-                    Add
+                    Save
                   </button>
-                </div>
-              </div>
+                </>
+              ) : (
+                <>
+                  <span className="text-sm text-gray-400">
+                    {Math.floor(totalFocusTime / 3600)}h{" "}
+                    {Math.floor((totalFocusTime % 3600) / 60)}m / {dailyGoal / 3600}h
+                  </span>
 
-              {tasks.map((task) => (
-                <DeepWorkCard
-                  key={task.id}
-                  session={task}
-                  onComplete={() => toggleTaskComplete(task.id)}
-                  onDelete={() => deleteTask(task.id)}
+                  <button
+                    onClick={() => setIsEditingGoal(true)}
+                    className="text-gray-400 hover:text-white"
+                  >
+                    Edit
+                  </button>
+                </>
+              )}
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold">Daily Tasks</h3>
+
+            <div className="rounded-xl border border-slate-800 bg-slate-900 p-4">
+              <h3 className="mb-3 text-lg font-semibold">Add Daily Task</h3>
+
+              <div className="flex gap-3">
+                <input
+                  type="text"
+                  placeholder="Task name"
+                  value={taskTitle}
+                  onChange={(e) => setTaskTitle(e.target.value)}
+                  className="flex-1 rounded bg-slate-800 px-3 py-2"
                 />
-              ))}
+
+                <input
+                  type="number"
+                  value={taskDuration}
+                  min={5}
+                  onChange={(e) => setTaskDuration(Number(e.target.value))}
+                  className="w-24 rounded bg-slate-800 px-3 py-2"
+                />
+
+                <button onClick={addTask} className="rounded bg-blue-600 px-4 py-2">
+                  Add
+                </button>
+              </div>
             </div>
 
-            {/* Progress Bar Container */}
-            <div className="w-full bg-slate-800 h-3 rounded">
-              {/* THIS IS WHERE YOU ADD IT */}
-              <div
-                className="bg-green-500 h-3 rounded transition-all"
-                style={{ width: `${progress}%` }}
+            {todayTasks.map((task) => (
+              <DeepWorkCard
+                key={task.id}
+                session={{
+                  id: task.id,
+                  title: task.title,
+                  duration: task.estimatedDuration ?? 30,
+                  startTime: task.status === "completed" ? "Completed" : "Not started",
+                  status: task.status === "completed" ? "completed" : "pending",
+                }}
+                onComplete={() => toggleTaskComplete(task.id)}
+                onDelete={() => deleteTask(task.id)}
               />
-            </div>
-          </div>
-          {/* Stats Cards */}
-          <div className="bg-slate-900 p-6 rounded-xl border border-slate-800">
-            <StatsCards stats={stats} />
+            ))}
           </div>
 
-          {/* Main Grid */}
-          {/* Main Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <DeepWorkCard
-              session={currentSession}
-              onPause={handlePause}
-              onStop={handleStop}
-              onBreak={() => setIsBreakActive(true)}
-              onTick={() => setTotalFocusTime((prev) => prev + 1)}
-              onComplete={() => setSessionsCompleted((prev) => prev + 1)}
-            />
-
-            <FocusStreak
-              currentStreak={5}
-              longestStreak={12}
-              weekData={weekData}
+          <div className="mt-6 h-3 w-full rounded bg-slate-800">
+            <div
+              className="h-3 rounded bg-green-500 transition-all"
+              style={{ width: `${progress}%` }}
             />
           </div>
+        </div>
 
-          {/* Bottom Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {isBreakActive && (
-              <BreakManager onClose={() => setIsBreakActive(false)} />
-            )}
+        <div className="rounded-xl border border-slate-800 bg-slate-900 p-6">
+          <StatsCards stats={stats} />
+        </div>
 
-            <MicroTimeline events={timelineEvents} currentTime="10:45 AM" />
-          </div>
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+          <DeepWorkCard
+            session={currentSession}
+            onPause={() => dispatch(pauseSession())}
+            onResume={() => dispatch(resumeSession())}
+            onStop={() => dispatch(stopSession())}
+            onBreak={() => dispatch(setBreakActive(true))}
+            onTick={() => dispatch(incrementFocusTime(1))}
+            onComplete={() => dispatch(incrementSessionsCompleted())}
+          />
+
+          <FocusStreak currentStreak={5} longestStreak={12} weekData={weekData} />
+        </div>
+
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+          {isBreakActive && (
+            <BreakManager onClose={() => dispatch(setBreakActive(false))} />
+          )}
+
+          <MicroTimeline events={timelineEvents} currentTime="10:45 AM" />
         </div>
       </div>
     </div>
@@ -298,3 +271,4 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+

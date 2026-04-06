@@ -1,6 +1,4 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { Provider } from 'react-redux';
-import { store } from './redux/store';
 import { useAppSelector } from './redux/hooks';
 
 import SignIn from './pages/auth/SignIn';
@@ -62,11 +60,9 @@ function AppRoutes() {
 
 function App() {
   return (
-    <Provider store={store}>
-      <BrowserRouter>
-        <AppRoutes />
-      </BrowserRouter>
-    </Provider>
+    <BrowserRouter>
+      <AppRoutes />
+    </BrowserRouter>
   );
 }
 

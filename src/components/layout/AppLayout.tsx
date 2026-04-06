@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, Outlet } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import type { RootState } from '../../redux/store';
 import { logout } from '../../redux/slices/authSlice';
 import Sidebar from './Sidebar';
 import Header from './Header';
@@ -8,7 +9,7 @@ import Header from './Header';
 const AppLayout = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { user, isAuthenticated } = useAppSelector((state: any) => state.auth);
+  const { user, isAuthenticated } = useAppSelector((state: RootState) => state.auth);
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
   useEffect(() => {
