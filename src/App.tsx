@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useAppSelector } from './redux/hooks';
 
@@ -49,7 +50,10 @@ function AppRoutes() {
         <Route path="tasks" element={<DailyTasks />} />
         <Route path="daily-review" element={<DailyReview />} />
         <Route path="weekly-review" element={<WeeklyReview />} />
-        <Route path="settings" element={<div className="p-6 text-white">Settings coming soon...</div>} />
+        <Route
+          path="settings"
+          element={<div className="p-6 text-slate-950 dark:text-white">Settings coming soon...</div>}
+        />
       </Route>
       
       {/* Catch all */}
@@ -59,6 +63,11 @@ function AppRoutes() {
 }
 
 function App() {
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('theme');
+    document.documentElement.classList.toggle('dark', savedTheme !== 'light');
+  }, []);
+
   return (
     <BrowserRouter>
       <AppRoutes />

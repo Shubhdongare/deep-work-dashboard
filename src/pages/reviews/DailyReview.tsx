@@ -180,7 +180,7 @@ const DailyReview = () => {
       {todayReview && !showReviewForm && (
         <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-700/50 dark:bg-slate-800/50">
           <h2 className="mb-4 text-lg font-semibold text-slate-950 dark:text-white">Today's Notes</h2>
-          <p className="text-slate-300 whitespace-pre-wrap">
+          <p className="whitespace-pre-wrap text-slate-700 dark:text-slate-300">
             {todayReview.notes || 'No notes added yet.'}
           </p>
           <button
@@ -203,7 +203,7 @@ const DailyReview = () => {
             >
               <div>
                 <p className="font-medium text-slate-950 dark:text-white">{formatDate(review.date)}</p>
-                <p className="text-sm text-slate-400">
+                <p className="text-sm text-slate-500 dark:text-slate-400">
                   {review.tasksCompleted}/{review.tasksTotal} tasks • {review.productivityScore}% productivity
                 </p>
               </div>

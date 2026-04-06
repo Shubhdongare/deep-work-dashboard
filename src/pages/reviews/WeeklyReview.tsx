@@ -242,7 +242,7 @@ const WeeklyReview = () => {
                   {review.averageProductivityScore}% avg
                 </span>
               </div>
-              <div className="flex gap-4 text-sm text-slate-400">
+              <div className="flex gap-4 text-sm text-slate-500 dark:text-slate-400">
                 <span>{review.totalTasksCompleted}/{review.totalTasks} tasks</span>
                 <span>{review.totalFocusTime} min focus</span>
               </div>
