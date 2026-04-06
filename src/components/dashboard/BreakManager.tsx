@@ -69,13 +69,13 @@ const BreakManager = ({ onClose }: BreakManagerProps) => {
   };
 
   return (
-    <div className="bg-slate-900 p-6 rounded-xl">
+    <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm transition-colors duration-300 dark:border-slate-800 dark:bg-slate-900">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-lg font-semibold">Break Manager</h2>
         {onClose && (
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-white"
+            className="text-slate-500 hover:text-slate-900 dark:text-gray-400 dark:hover:text-white"
           >
             ✕
           </button>

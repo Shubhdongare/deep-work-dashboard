@@ -36,7 +36,7 @@ const MicroTimeline = ({ events, currentTime }: MicroTimelineProps) => {
   };
 
   return (
-    <div className="bg-slate-900 p-6 rounded-xl border border-slate-800">
+    <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm transition-colors duration-300 dark:border-slate-800 dark:bg-slate-900">
 
       {/* Header */}
       <div className="flex justify-between items-center mb-4">
@@ -44,7 +44,7 @@ const MicroTimeline = ({ events, currentTime }: MicroTimelineProps) => {
           Session Timeline
         </h3>
 
-        <span className="text-sm text-gray-400">
+        <span className="text-sm text-slate-500 dark:text-gray-400">
           {currentTime}
         </span>
       </div>
@@ -73,13 +73,13 @@ const MicroTimeline = ({ events, currentTime }: MicroTimelineProps) => {
                   {event.title}
                 </div>
 
-                <div className="text-xs text-gray-400">
+                <div className="text-xs text-slate-500 dark:text-gray-400">
                   {event.time}
                 </div>
               </div>
 
               {event.duration && (
-                <div className="text-xs text-gray-400">
+                <div className="text-xs text-slate-500 dark:text-gray-400">
                   {event.duration}m
                 </div>
               )}

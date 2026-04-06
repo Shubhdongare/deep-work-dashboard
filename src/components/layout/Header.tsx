@@ -4,24 +4,34 @@ import type { RootState } from '../../redux/store';
 interface HeaderProps {
   title: string;
   subtitle?: string;
+  isDarkMode: boolean;
+  onToggleTheme: () => void;
   onLogout?: () => void;
 }
 
-const Header = ({ title, subtitle, onLogout }: HeaderProps) => {
+const Header = ({ title, subtitle, isDarkMode, onToggleTheme, onLogout }: HeaderProps) => {
   const { user } = useAppSelector((state: RootState) => state.auth);
 
   return (
-    <header className="flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-slate-950">
+    <header className="flex items-center justify-between border-b border-slate-200 bg-white px-6 py-4 transition-colors duration-300 dark:border-slate-800 dark:bg-slate-950">
       {/* Left Side */}
       <div>
-        <h1 className="text-xl font-semibold text-white">{title}</h1>
+        <h1 className="text-xl font-semibold text-slate-950 dark:text-white">{title}</h1>
         {subtitle && (
-          <p className="text-sm text-gray-400">{subtitle}</p>
+          <p className="text-sm text-slate-500 dark:text-gray-400">{subtitle}</p>
         )}
       </div>
 
       {/* Right Side */}
       <div className="flex items-center gap-4">
+        <button
+          onClick={onToggleTheme}
+          className="rounded-lg border border-slate-200 bg-slate-100 px-3 py-2 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-200 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
+          title="Toggle theme"
+        >
+          {isDarkMode ? 'Light Mode' : 'Dark Mode'}
+        </button>
+
         {/* User Avatar */}
         <div className="flex items-center gap-3">
           {user?.photoURL ? (
@@ -40,7 +50,7 @@ const Header = ({ title, subtitle, onLogout }: HeaderProps) => {
           {onLogout && (
             <button
               onClick={onLogout}
-              className="p-2 hover:bg-slate-800 rounded-lg transition-colors text-slate-400 hover:text-white"
+              className="rounded-lg p-2 text-slate-500 transition-colors hover:bg-slate-200 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-white"
               title="Sign Out"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

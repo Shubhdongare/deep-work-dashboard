@@ -70,12 +70,12 @@ const WeeklyReview = () => {
   };
 
   return (
-    <div className="p-6 max-w-4xl mx-auto">
+    <div className="mx-auto max-w-4xl p-6 text-slate-950 dark:text-white">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-white">Weekly Review</h1>
-          <p className="text-slate-400 mt-1">{formatWeekRange()}</p>
+          <h1 className="text-2xl font-bold text-slate-950 dark:text-white">Weekly Review</h1>
+          <p className="mt-1 text-slate-500 dark:text-slate-400">{formatWeekRange()}</p>
         </div>
         <button
           onClick={() => setShowReviewForm(true)}
@@ -99,17 +99,17 @@ const WeeklyReview = () => {
           return (
             <div
               key={date}
-              className={`p-3 bg-slate-800/30 border rounded-xl text-center ${
-                isToday ? 'border-blue-500/50 bg-blue-500/10' : 'border-slate-700/30'
+              className={`rounded-xl border p-3 text-center ${
+                isToday ? 'border-blue-500/50 bg-blue-500/10' : 'border-slate-200 bg-white shadow-sm dark:border-slate-700/30 dark:bg-slate-800/30'
               }`}
             >
               <div className="text-xs text-slate-500 mb-1">
                 {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][index]}
               </div>
-              <div className={`text-lg font-bold ${isToday ? 'text-blue-400' : 'text-white'}`}>
+              <div className={`text-lg font-bold ${isToday ? 'text-blue-500 dark:text-blue-400' : 'text-slate-950 dark:text-white'}`}>
                 {new Date(date).getDate()}
               </div>
-              <div className="text-xs text-slate-400 mt-1">
+              <div className="mt-1 text-xs text-slate-500 dark:text-slate-400">
                 {completed}/{total} tasks
               </div>
             </div>
@@ -119,44 +119,44 @@ const WeeklyReview = () => {
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-        <div className="bg-slate-800/50 border border-slate-700/50 rounded-xl p-4">
-          <span className="text-slate-400 text-sm">Tasks Completed</span>
-          <div className="text-2xl font-bold text-white mt-1">
+        <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-700/50 dark:bg-slate-800/50">
+          <span className="text-sm text-slate-500 dark:text-slate-400">Tasks Completed</span>
+          <div className="mt-1 text-2xl font-bold text-slate-950 dark:text-white">
             {completedTasks}<span className="text-sm text-slate-500">/{totalTasks}</span>
           </div>
         </div>
 
-        <div className="bg-slate-800/50 border border-slate-700/50 rounded-xl p-4">
-          <span className="text-slate-400 text-sm">Days Reviewed</span>
-          <div className="text-2xl font-bold text-white mt-1">
+        <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-700/50 dark:bg-slate-800/50">
+          <span className="text-sm text-slate-500 dark:text-slate-400">Days Reviewed</span>
+          <div className="mt-1 text-2xl font-bold text-slate-950 dark:text-white">
             {weekDailyReviews.length}<span className="text-sm text-slate-500">/7</span>
           </div>
         </div>
 
-        <div className="bg-slate-800/50 border border-slate-700/50 rounded-xl p-4">
-          <span className="text-slate-400 text-sm">Focus Time</span>
-          <div className="text-2xl font-bold text-white mt-1">
+        <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-700/50 dark:bg-slate-800/50">
+          <span className="text-sm text-slate-500 dark:text-slate-400">Focus Time</span>
+          <div className="mt-1 text-2xl font-bold text-slate-950 dark:text-white">
             {totalFocusTime}<span className="text-sm text-slate-500"> min</span>
           </div>
         </div>
 
-        <div className="bg-slate-800/50 border border-slate-700/50 rounded-xl p-4">
-          <span className="text-slate-400 text-sm">Avg Productivity</span>
-          <div className="text-2xl font-bold text-white mt-1">
+        <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-700/50 dark:bg-slate-800/50">
+          <span className="text-sm text-slate-500 dark:text-slate-400">Avg Productivity</span>
+          <div className="mt-1 text-2xl font-bold text-slate-950 dark:text-white">
             {avgProductivity}<span className="text-sm text-slate-500">%</span>
           </div>
         </div>
       </div>
 
       {/* Progress Bar */}
-      <div className="mb-6 bg-slate-800/50 border border-slate-700/50 rounded-xl p-5">
+      <div className="mb-6 rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-700/50 dark:bg-slate-800/50">
         <div className="flex items-center justify-between mb-2">
-          <span className="text-slate-400 text-sm">Weekly Completion Rate</span>
-          <span className="text-white font-medium">
+          <span className="text-sm text-slate-500 dark:text-slate-400">Weekly Completion Rate</span>
+          <span className="font-medium text-slate-950 dark:text-white">
             {totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0}%
           </span>
         </div>
-        <div className="w-full h-3 bg-slate-700 rounded-full overflow-hidden">
+        <div className="h-3 w-full overflow-hidden rounded-full bg-slate-300 dark:bg-slate-700">
           <div 
             className="h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full transition-all"
             style={{ width: `${totalTasks > 0 ? (completedTasks / totalTasks) * 100 : 0}%` }}
@@ -166,11 +166,11 @@ const WeeklyReview = () => {
 
       {/* Review Form */}
       {showReviewForm && (
-        <div className="bg-slate-800/50 border border-slate-700/50 rounded-xl p-5 space-y-4">
-          <h2 className="text-lg font-semibold text-white">Weekly Reflection</h2>
+        <div className="space-y-4 rounded-xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-700/50 dark:bg-slate-800/50">
+          <h2 className="text-lg font-semibold text-slate-950 dark:text-white">Weekly Reflection</h2>
           
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2">
+            <label className="mb-2 block text-sm font-medium text-slate-600 dark:text-slate-300">
               Highlights (one per line)
             </label>
             <textarea
@@ -178,12 +178,12 @@ const WeeklyReview = () => {
               onChange={(e) => setHighlights(e.target.value)}
               placeholder="What went well this week?"
               rows={3}
-              className="w-full px-4 py-3 bg-slate-900/50 border border-slate-600/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 resize-none"
+              className="w-full resize-none rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-950 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 dark:border-slate-600/50 dark:bg-slate-900/50 dark:text-white dark:placeholder-slate-500"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2">
+            <label className="mb-2 block text-sm font-medium text-slate-600 dark:text-slate-300">
               Improvements (one per line)
             </label>
             <textarea
@@ -191,12 +191,12 @@ const WeeklyReview = () => {
               onChange={(e) => setImprovements(e.target.value)}
               placeholder="What could be improved?"
               rows={3}
-              className="w-full px-4 py-3 bg-slate-900/50 border border-slate-600/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 resize-none"
+              className="w-full resize-none rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-950 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 dark:border-slate-600/50 dark:bg-slate-900/50 dark:text-white dark:placeholder-slate-500"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-2">
+            <label className="mb-2 block text-sm font-medium text-slate-600 dark:text-slate-300">
               Next Week Goals (one per line)
             </label>
             <textarea
@@ -204,14 +204,14 @@ const WeeklyReview = () => {
               onChange={(e) => setNextWeekGoals(e.target.value)}
               placeholder="What do you want to achieve next week?"
               rows={3}
-              className="w-full px-4 py-3 bg-slate-900/50 border border-slate-600/50 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 resize-none"
+              className="w-full resize-none rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-950 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 dark:border-slate-600/50 dark:bg-slate-900/50 dark:text-white dark:placeholder-slate-500"
             />
           </div>
 
           <div className="flex justify-end gap-2 pt-2">
             <button
               onClick={() => setShowReviewForm(false)}
-              className="px-4 py-2 text-slate-400 hover:text-white transition-colors"
+              className="px-4 py-2 text-slate-500 transition-colors hover:text-slate-950 dark:text-slate-400 dark:hover:text-white"
             >
               Cancel
             </button>
@@ -227,15 +227,15 @@ const WeeklyReview = () => {
 
       {/* Recent Weekly Reviews */}
       <div className="mt-6">
-        <h2 className="text-lg font-semibold text-white mb-4">Previous Weeks</h2>
+        <h2 className="mb-4 text-lg font-semibold text-slate-950 dark:text-white">Previous Weeks</h2>
         <div className="space-y-3">
           {weeklyReviews.slice(-4).reverse().map((review: any) => (
             <div
               key={review.id}
-              className="p-4 bg-slate-800/30 border border-slate-700/30 rounded-xl"
+              className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-700/30 dark:bg-slate-800/30"
             >
               <div className="flex items-center justify-between mb-2">
-                <p className="text-white font-medium">
+                <p className="font-medium text-slate-950 dark:text-white">
                   {new Date(review.weekStart).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - {new Date(review.weekEnd).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                 </p>
                 <span className="px-2 py-1 bg-purple-500/20 text-purple-400 rounded-full text-xs">

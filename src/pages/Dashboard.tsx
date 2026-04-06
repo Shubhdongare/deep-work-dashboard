@@ -142,9 +142,9 @@ const Dashboard = () => {
   ];
 
   return (
-    <div className="min-h-full bg-slate-950 p-6 text-white">
+    <div className="min-h-full bg-slate-100 p-6 text-slate-950 transition-colors duration-300 dark:bg-slate-950 dark:text-white">
       <div className="mx-auto max-w-7xl space-y-6">
-        <div className="rounded-xl border border-slate-800 bg-slate-900 p-6">
+        <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm transition-colors duration-300 dark:border-slate-800 dark:bg-slate-900">
           <div className="mb-2 flex items-center justify-between">
             <h3 className="text-lg font-semibold">Daily Goal</h3>
 
@@ -156,7 +156,7 @@ const Dashboard = () => {
                     value={goalInput}
                     min={1}
                     onChange={(e) => setGoalInput(Number(e.target.value))}
-                    className="w-16 rounded bg-slate-800 px-2 py-1"
+                    className="w-16 rounded border border-slate-200 bg-white px-2 py-1 text-slate-950 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
                   />
 
                   <button
@@ -171,14 +171,14 @@ const Dashboard = () => {
                 </>
               ) : (
                 <>
-                  <span className="text-sm text-gray-400">
+                  <span className="text-sm text-slate-500 dark:text-gray-400">
                     {Math.floor(totalFocusTime / 3600)}h{" "}
                     {Math.floor((totalFocusTime % 3600) / 60)}m / {dailyGoal / 3600}h
                   </span>
 
                   <button
                     onClick={() => setIsEditingGoal(true)}
-                    className="text-gray-400 hover:text-white"
+                    className="text-slate-500 hover:text-slate-900 dark:text-gray-400 dark:hover:text-white"
                   >
                     Edit
                   </button>
@@ -190,7 +190,7 @@ const Dashboard = () => {
           <div className="space-y-4">
             <h3 className="text-lg font-semibold">Daily Tasks</h3>
 
-            <div className="rounded-xl border border-slate-800 bg-slate-900 p-4">
+            <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 transition-colors duration-300 dark:border-slate-800 dark:bg-slate-900">
               <h3 className="mb-3 text-lg font-semibold">Add Daily Task</h3>
 
               <div className="flex gap-3">
@@ -199,7 +199,7 @@ const Dashboard = () => {
                   placeholder="Task name"
                   value={taskTitle}
                   onChange={(e) => setTaskTitle(e.target.value)}
-                  className="flex-1 rounded bg-slate-800 px-3 py-2"
+                  className="flex-1 rounded border border-slate-200 bg-white px-3 py-2 text-slate-950 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
                 />
 
                 <input
@@ -207,7 +207,7 @@ const Dashboard = () => {
                   value={taskDuration}
                   min={5}
                   onChange={(e) => setTaskDuration(Number(e.target.value))}
-                  className="w-24 rounded bg-slate-800 px-3 py-2"
+                  className="w-24 rounded border border-slate-200 bg-white px-3 py-2 text-slate-950 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
                 />
 
                 <button onClick={addTask} className="rounded bg-blue-600 px-4 py-2">
@@ -232,7 +232,7 @@ const Dashboard = () => {
             ))}
           </div>
 
-          <div className="mt-6 h-3 w-full rounded bg-slate-800">
+          <div className="mt-6 h-3 w-full rounded bg-slate-200 dark:bg-slate-800">
             <div
               className="h-3 rounded bg-green-500 transition-all"
               style={{ width: `${progress}%` }}
@@ -240,7 +240,7 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <div className="rounded-xl border border-slate-800 bg-slate-900 p-6">
+        <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm transition-colors duration-300 dark:border-slate-800 dark:bg-slate-900">
           <StatsCards stats={stats} />
         </div>
 

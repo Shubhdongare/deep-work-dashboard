@@ -22,7 +22,7 @@ const FocusStreak = ({
   };
 
   return (
-    <div className="bg-slate-900 p-6 rounded-xl border border-slate-800">
+    <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm transition-colors duration-300 dark:border-slate-800 dark:bg-slate-900">
 
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
@@ -37,7 +37,7 @@ const FocusStreak = ({
             <div className="text-xl font-semibold">
               {currentStreak}
             </div>
-            <div className="text-xs text-gray-400">
+            <div className="text-xs text-slate-500 dark:text-gray-400">
               Current
             </div>
           </div>
@@ -46,7 +46,7 @@ const FocusStreak = ({
             <div className="text-xl font-semibold">
               {longestStreak}
             </div>
-            <div className="text-xs text-gray-400">
+            <div className="text-xs text-slate-500 dark:text-gray-400">
               Longest
             </div>
           </div>
@@ -64,12 +64,12 @@ const FocusStreak = ({
             className={`flex flex-col items-center p-2 rounded-lg 
             ${
               day.completed
-                ? "bg-green-600/20 border border-green-600"
-                : "bg-slate-800"
+                ? "border border-green-600 bg-green-600/20"
+                : "bg-slate-100 dark:bg-slate-800"
             }`}
           >
 
-            <span className="text-xs text-gray-400">
+            <span className="text-xs text-slate-500 dark:text-gray-400">
               {getDayName(day.date)}
             </span>
 

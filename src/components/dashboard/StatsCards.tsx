@@ -15,7 +15,7 @@ const StatsCards = ({ stats }: StatsCardsProps) => {
       {stats.map((stat, index) => (
         <div
           key={index}
-          className="bg-slate-900 p-4 rounded-xl border border-slate-800"
+          className="rounded-xl border border-slate-200 bg-slate-50 p-4 transition-colors duration-300 dark:border-slate-800 dark:bg-slate-900"
         >
           {/* Icon */}
           {stat.icon && (
@@ -28,7 +28,7 @@ const StatsCards = ({ stats }: StatsCardsProps) => {
           </div>
 
           {/* Label */}
-          <div className="text-sm text-gray-400">
+          <div className="text-sm text-slate-500 dark:text-gray-400">
             {stat.label}
           </div>
 

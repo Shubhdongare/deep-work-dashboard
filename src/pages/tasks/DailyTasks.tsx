@@ -117,12 +117,12 @@ const DailyTasks = () => {
   const isToday = currentDate === new Date().toISOString().split('T')[0];
 
   return (
-    <div className="p-6 max-w-6xl mx-auto">
+    <div className="mx-auto max-w-6xl p-6 text-slate-950 dark:text-white">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-white">Daily Tasks</h1>
-          <p className="text-slate-400 mt-1">{formatDate(currentDate)}</p>
+          <h1 className="text-2xl font-bold text-slate-950 dark:text-white">Daily Tasks</h1>
+          <p className="mt-1 text-slate-500 dark:text-slate-400">{formatDate(currentDate)}</p>
         </div>
         <button
           onClick={() => setShowAddForm(!showAddForm)}
@@ -139,24 +139,24 @@ const DailyTasks = () => {
       <div className="flex items-center justify-center gap-4 mb-6">
         <button
           onClick={() => changeDate(-1)}
-          className="p-2 hover:bg-slate-800 rounded-lg transition-colors"
+          className="rounded-lg p-2 transition-colors hover:bg-slate-200 dark:hover:bg-slate-800"
         >
-          <svg className="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-5 h-5 text-slate-500 dark:text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
         </button>
         
         <div className="text-center">
-          <span className={`text-lg font-medium ${isToday ? 'text-blue-400' : 'text-white'}`}>
+          <span className={`text-lg font-medium ${isToday ? 'text-blue-500 dark:text-blue-400' : 'text-slate-950 dark:text-white'}`}>
             {isToday ? 'Today' : formatDate(currentDate)}
           </span>
         </div>
 
         <button
           onClick={() => changeDate(1)}
-          className="p-2 hover:bg-slate-800 rounded-lg transition-colors"
+          className="rounded-lg p-2 transition-colors hover:bg-slate-200 dark:hover:bg-slate-800"
         >
-          <svg className="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg className="w-5 h-5 text-slate-500 dark:text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
           </svg>
         </button>
@@ -164,7 +164,7 @@ const DailyTasks = () => {
 
       {/* Add Task Form */}
       {showAddForm && (
-        <div className="mb-6 bg-slate-800/50 border border-slate-700/50 rounded-xl p-4">
+        <div className="mb-6 rounded-xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-700/50 dark:bg-slate-800/50">
           <form onSubmit={handleAddTask} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
@@ -173,7 +173,7 @@ const DailyTasks = () => {
                   value={newTaskTitle}
                   onChange={(e) => setNewTaskTitle(e.target.value)}
                   placeholder="Task title..."
-                  className="w-full px-4 py-2 bg-slate-900/50 border border-slate-600/50 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+                  className="w-full rounded-lg border border-slate-300 bg-white px-4 py-2 text-slate-950 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 dark:border-slate-600/50 dark:bg-slate-900/50 dark:text-white dark:placeholder-slate-500"
                   autoFocus
                 />
               </div>
@@ -181,7 +181,7 @@ const DailyTasks = () => {
                 <select
                   value={newTaskPriority}
                   onChange={(e) => setNewTaskPriority(e.target.value as TaskPriority)}
-                  className="w-full px-4 py-2 bg-slate-900/50 border border-slate-600/50 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+                  className="w-full rounded-lg border border-slate-300 bg-white px-4 py-2 text-slate-950 focus:outline-none focus:ring-2 focus:ring-blue-500/50 dark:border-slate-600/50 dark:bg-slate-900/50 dark:text-white"
                 >
                   <option value="low">Low Priority</option>
                   <option value="medium">Medium Priority</option>
@@ -196,14 +196,14 @@ const DailyTasks = () => {
                 onChange={(e) => setNewTaskDescription(e.target.value)}
                 placeholder="Description (optional)..."
                 rows={2}
-                className="w-full px-4 py-2 bg-slate-900/50 border border-slate-600/50 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 resize-none"
+                className="w-full resize-none rounded-lg border border-slate-300 bg-white px-4 py-2 text-slate-950 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/50 dark:border-slate-600/50 dark:bg-slate-900/50 dark:text-white dark:placeholder-slate-500"
               />
             </div>
             <div className="flex justify-end gap-2">
               <button
                 type="button"
                 onClick={() => setShowAddForm(false)}
-                className="px-4 py-2 text-slate-400 hover:text-white transition-colors"
+                className="px-4 py-2 text-slate-500 transition-colors hover:text-slate-950 dark:text-slate-400 dark:hover:text-white"
               >
                 Cancel
               </button>
@@ -223,7 +223,7 @@ const DailyTasks = () => {
         <select
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value as TaskStatus | 'all')}
-          className="px-3 py-2 bg-slate-800/50 border border-slate-700/50 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+          className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-950 focus:outline-none focus:ring-2 focus:ring-blue-500/50 dark:border-slate-700/50 dark:bg-slate-800/50 dark:text-white"
         >
           <option value="all">All Status</option>
           <option value="pending">Pending</option>
@@ -234,7 +234,7 @@ const DailyTasks = () => {
         <select
           value={priorityFilter}
           onChange={(e) => setPriorityFilter(e.target.value as TaskPriority | 'all')}
-          className="px-3 py-2 bg-slate-800/50 border border-slate-700/50 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+          className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-950 focus:outline-none focus:ring-2 focus:ring-blue-500/50 dark:border-slate-700/50 dark:bg-slate-800/50 dark:text-white"
         >
           <option value="all">All Priority</option>
           <option value="urgent">Urgent</option>
@@ -243,9 +243,9 @@ const DailyTasks = () => {
           <option value="low">Low</option>
         </select>
 
-        <div className="ml-auto flex items-center gap-2 text-sm text-slate-400">
+        <div className="ml-auto flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
           <span>{completedCount}/{totalCount} tasks completed</span>
-          <div className="w-24 h-2 bg-slate-700 rounded-full overflow-hidden">
+          <div className="h-2 w-24 overflow-hidden rounded-full bg-slate-300 dark:bg-slate-700">
             <div 
               className="h-full bg-green-500 transition-all"
               style={{ width: totalCount > 0 ? `${(completedCount / totalCount) * 100}%` : '0%' }}
@@ -258,7 +258,7 @@ const DailyTasks = () => {
       <div className="space-y-3">
         {filteredTasks.length === 0 ? (
           <div className="text-center py-12">
-            <div className="w-16 h-16 mx-auto mb-4 bg-slate-800/50 rounded-full flex items-center justify-center">
+            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-slate-200 dark:bg-slate-800/50">
               <svg className="w-8 h-8 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
               </svg>
@@ -270,7 +270,7 @@ const DailyTasks = () => {
           filteredTasks.map((task: any) => (
             <div
               key={task.id}
-              className={`group flex items-center gap-4 p-4 bg-slate-800/30 border border-slate-700/30 rounded-xl hover:border-slate-600/50 transition-all ${
+              className={`group flex items-center gap-4 rounded-xl border bg-white p-4 shadow-sm transition-all dark:bg-slate-800/30 ${
                 task.status === 'completed' ? 'opacity-60' : ''
               }`}
             >
@@ -279,8 +279,8 @@ const DailyTasks = () => {
                 onClick={() => handleToggleStatus(task.id, task.status)}
                 className={`flex-shrink-0 w-6 h-6 rounded-full border-2 transition-all flex items-center justify-center ${
                   task.status === 'completed' 
-                    ? 'bg-green-500 border-green-500' 
-                    : 'border-slate-500 hover:border-blue-500'
+                    ? 'border-green-500 bg-green-500' 
+                    : 'border-slate-400 hover:border-blue-500 dark:border-slate-500'
                 }`}
               >
                 {task.status === 'completed' && (
@@ -302,14 +302,14 @@ const DailyTasks = () => {
                       if (e.key === 'Escape') handleCancelEdit();
                     }}
                     onBlur={() => handleSaveEdit(task.id)}
-                    className="w-full px-2 py-1 bg-slate-900/50 border border-blue-500/50 rounded text-white focus:outline-none"
+                    className="w-full rounded border border-blue-500/50 bg-white px-2 py-1 text-slate-950 focus:outline-none dark:bg-slate-900/50 dark:text-white"
                     autoFocus
                   />
                 ) : (
                   <div 
                     onClick={() => handleStartEdit(task.id, task.title)}
                     className={`cursor-pointer ${
-                      task.status === 'completed' ? 'line-through text-slate-500' : 'text-white'
+                      task.status === 'completed' ? 'text-slate-500 line-through' : 'text-slate-950 dark:text-white'
                     }`}
                   >
                     {task.title}

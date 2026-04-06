@@ -57,19 +57,19 @@ const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
 
   return (
     <aside
-      className={`bg-slate-900 text-white h-screen transition-all duration-300 fixed left-0 top-0 z-50 flex flex-col ${
+      className={`fixed left-0 top-0 z-50 flex h-screen flex-col border-r border-slate-200 bg-white text-slate-900 transition-all duration-300 dark:border-slate-800 dark:bg-slate-900 dark:text-white ${
         isOpen ? "w-64" : "w-16"
       }`}
     >
       {/* Header */}
-      <div className="flex items-center justify-between p-4 border-b border-slate-700">
+      <div className="flex items-center justify-between border-b border-slate-200 p-4 dark:border-slate-700">
         <h2 className={`${!isOpen && "hidden"} font-semibold text-lg`}>
           Deep Work
         </h2>
 
         <button
           onClick={onToggle}
-          className="text-sm bg-slate-800 px-2 py-1 rounded hover:bg-slate-700 transition-colors"
+          className="rounded bg-slate-200 px-2 py-1 text-sm transition-colors hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700"
         >
           {isOpen ? "←" : "→"}
         </button>
@@ -83,8 +83,8 @@ const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
             to={item.href}
             className={`flex items-center gap-3 p-3 rounded-xl transition-all ${
               isActive(item.href)
-                ? "bg-blue-500/20 text-blue-400 border border-blue-500/30"
-                : "hover:bg-slate-800 text-slate-300"
+                ? "border border-blue-500/30 bg-blue-500/10 text-blue-600 dark:bg-blue-500/20 dark:text-blue-400"
+                : "text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
             }`}
           >
             <span className="flex-shrink-0">{item.icon}</span>
@@ -96,10 +96,10 @@ const Sidebar = ({ isOpen, onToggle }: SidebarProps) => {
       </nav>
 
       {/* Bottom Section */}
-      <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-slate-700">
+      <div className="absolute bottom-0 left-0 right-0 border-t border-slate-200 p-4 dark:border-slate-700">
         <Link
           to="/settings"
-          className="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-800 text-slate-300 transition-all"
+          className="flex items-center gap-3 rounded-xl p-3 text-slate-600 transition-all hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
         >
           <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />

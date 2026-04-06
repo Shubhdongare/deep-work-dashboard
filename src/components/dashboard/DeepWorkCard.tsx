@@ -80,7 +80,7 @@ const DeepWorkCard = ({
   };
 
   return (
-    <div className="bg-slate-900 p-6 rounded-xl border border-slate-800">
+    <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm transition-colors duration-300 dark:border-slate-800 dark:bg-slate-900">
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-lg font-semibold">{session.title}</h3>
@@ -102,13 +102,13 @@ const DeepWorkCard = ({
       {/* Body */}
       <div className="space-y-3">
         <div className="flex justify-between">
-          <span className="text-gray-400">Started</span>
+          <span className="text-slate-500 dark:text-gray-400">Started</span>
           <span>{session.startTime}</span>
         </div>
 
         {session.focusScore !== undefined && (
           <div className="flex justify-between">
-            <span className="text-gray-400">Focus Score</span>
+            <span className="text-slate-500 dark:text-gray-400">Focus Score</span>
             <span>{session.focusScore}%</span>
           </div>
         )}
